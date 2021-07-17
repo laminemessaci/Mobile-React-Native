@@ -1,20 +1,22 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import {
   ScrollView,
   View,
   KeyboardAvoidingView,
   StyleSheet,
-  Button,
   ActivityIndicator,
-  Alert,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
 import Colors from "../../constants/Colors";
 import Card from "../../components/Card";
+import IEDFormButton from "../../components/IEDFormButton";
+import IDEFormInput from "../../components/IEDFormInput";
 
 const AuthScreen = (props) => {
   useEffect(() => {}, []);
+
+  const inputChangeHandler = useCallback([]);
 
   return (
     <KeyboardAvoidingView
@@ -22,17 +24,36 @@ const AuthScreen = (props) => {
       keyboardVerticalOffset={20}
       style={styles.screen}
     >
-      <LinearGradient colors={["#ffedff", "#ffd3fe"]} style={styles.gradient}>
+      <LinearGradient colors={["#ffedff", "#ffd3ee"]} style={styles.gradient}>
         <Card style={styles.authContainer}>
           <ScrollView>
             <View style={styles.buttonContainer}>
-              <Button
-                title={"Login"}
-                color={Colors.primary}
-                onPress={() => {
-                  console.log("handle button !!");
-                }}
+              <IDEFormInput
+                id="email"
+                label="E-Mail"
+                keyboardType="email-address"
+                required
+                email
+                autoCapitalize="none"
+                onInputChange={inputChangeHandler}
+                errorText="Please enter a valid email address."
+                initialValue=""
               />
+              <IDEFormInput
+                id="password"
+                label="Password"
+                keyboardType="default"
+                secureTextEntry
+                required
+                minLength={5}
+                autoCapitalize="none"
+                errorText="Please enter a valid password."
+                onInputChange={inputChangeHandler}
+                initialValue=""
+              />
+              <View style={styles.buttonContainer}>
+                <IEDFormButton color={Colors.primary} title="login" />
+              </View>
             </View>
           </ScrollView>
         </Card>
@@ -58,7 +79,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   buttonContainer: {
-    marginTop: 10,
+    marginTop: 15,
   },
 });
 
