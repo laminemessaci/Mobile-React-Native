@@ -23,7 +23,7 @@ const MainStackNavigator = () => {
   return (
     <Stack.Navigator screenOptions={defaultNavOptions}>
       <Stack.Screen
-        name="Login"
+        name="Authentificate"
         component={AuthScreen}
         options={{ headerShown: true }}
       />

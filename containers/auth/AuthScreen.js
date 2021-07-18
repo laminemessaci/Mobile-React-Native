@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useReducer } from "react";
 import {
   ScrollView,
   View,
@@ -13,11 +13,61 @@ import Card from "../../components/Card";
 import IEDFormButton from "../../components/IEDFormButton";
 import IDEFormInput from "../../components/IEDFormInput";
 
+const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
+
+const formReducer = (state, action) => {
+  if (action.type === FORM_INPUT_UPDATE) {
+    const updatedValues = {
+      ...state.inputValues,
+      [action.input]: action.value,
+    };
+    const updatedValidities = {
+      ...state.inputValidities,
+      [action.input]: action.isValid,
+    };
+    let updatedFormIsValid = true;
+    for (const key in updatedValidities) {
+      updatedFormIsValid = updatedFormIsValid && updatedValidities[key];
+    }
+    return {
+      formIsValid: updatedFormIsValid,
+      inputValidities: updatedValidities,
+      inputValues: updatedValues,
+    };
+  }
+  return state;
+};
+
 const AuthScreen = (props) => {
+  const [formState, dispatchFormState] = useReducer(formReducer, {
+    inputValues: {
+      email: "",
+      password: "",
+    },
+    inputValidities: {
+      email: false,
+      password: false,
+    },
+    formIsValid: false,
+  });
+
+  const onSubmitHandler = () => {
+    console.log(formState.inputValues.email);
+  };
+
+  const inputChangeHandler = useCallback(
+    (inputIdentifier, inputValue, inputValidity) => {
+      dispatchFormState({
+        type: FORM_INPUT_UPDATE,
+        value: inputValue,
+        isValid: inputValidity,
+        input: inputIdentifier,
+      });
+    },
+    [dispatchFormState]
+  );
+
   useEffect(() => {}, []);
-
-  const inputChangeHandler = useCallback([]);
-
   return (
     <KeyboardAvoidingView
       behavior="height"
@@ -52,7 +102,11 @@ const AuthScreen = (props) => {
                 initialValue=""
               />
               <View style={styles.buttonContainer}>
-                <IEDFormButton color={Colors.primary} title="login" />
+                <IEDFormButton
+                  color={Colors.primary}
+                  title="login"
+                  onPressHandler={onSubmitHandler}
+                />
               </View>
             </View>
           </ScrollView>
@@ -79,7 +133,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   buttonContainer: {
-    marginTop: 15,
+    marginTop: 10,
   },
 });
 
