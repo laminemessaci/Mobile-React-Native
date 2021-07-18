@@ -1,10 +1,11 @@
-import React, { useEffect, useCallback, useReducer } from "react";
+import React, { useState, useEffect, useCallback, useReducer } from "react";
 import {
   ScrollView,
   View,
   KeyboardAvoidingView,
   StyleSheet,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -15,6 +16,12 @@ import IDEFormInput from "../../components/IEDFormInput";
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
 
+/**
+ * function validations
+ * @param {*} state
+ * @param {*} action
+ * @returns
+ */
 const formReducer = (state, action) => {
   if (action.type === FORM_INPUT_UPDATE) {
     const updatedValues = {
@@ -39,6 +46,9 @@ const formReducer = (state, action) => {
 };
 
 const AuthScreen = ({ navigation }) => {
+  /**
+   *Custom hook
+   */
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
       email: "",
@@ -53,11 +63,18 @@ const AuthScreen = ({ navigation }) => {
 
   const onSubmitHandler = () => {
     const email = formState.inputValues.email;
-    if (email.includes("@inextenso.fr")) {
-      console.log("Bienvenues");
+    const password = formState.inputValues.password;
+    if (!email.includes("@inextenso.fr")) {
+      Alert.alert("Sorry!", "You are not an inextenso customer!", [
+        { text: "Okay" },
+      ]);
+    } else if (password.length < 6) {
+      Alert.alert("Sorry!", "password must be valid!", [{ text: "Okay" }]);
+    }
+
+    if (email.includes("@inextenso.fr") && password.length >= 6) {
       navigation.navigate("IDElogo");
     } else {
-      console.log("Vous n'êtes pas client !! ");
     }
   };
 
@@ -73,7 +90,10 @@ const AuthScreen = ({ navigation }) => {
     [dispatchFormState]
   );
 
-  useEffect(() => {}, []);
+  //const [isDisable, setIsDisable] = useState(true);
+  const isDisable = formState.formIsValid;
+  console.log("hrrrrrrrrrrrrr" + formState.formIsValid);
+  useEffect(() => {}, [isDisable]);
   return (
     <KeyboardAvoidingView
       behavior="height"
@@ -101,9 +121,9 @@ const AuthScreen = ({ navigation }) => {
                 keyboardType="default"
                 secureTextEntry
                 required
-                minLength={5}
+                minLength={6}
                 autoCapitalize="none"
-                errorText="Please enter a valid password."
+                errorText="Please enter password(minimum 6 characters)."
                 onInputChange={inputChangeHandler}
                 initialValue=""
               />
@@ -111,6 +131,7 @@ const AuthScreen = ({ navigation }) => {
                 <IEDFormButton
                   color={Colors.primary}
                   title="login"
+                  isDisable={!isDisable}
                   onPressHandler={() => {
                     onSubmitHandler();
                   }}
@@ -141,7 +162,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   buttonContainer: {
-    marginTop: 10,
+    marginTop: 30,
   },
 });
 

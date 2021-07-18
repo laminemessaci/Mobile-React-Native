@@ -22,10 +22,17 @@ const inputReducer = (state, action) => {
   }
 };
 
+/**
+ * Custom global Input
+ * @param {*} props
+ * @returns
+ */
 const IDEFormInput = (props) => {
+  const { initialValue, initiallyValid } = props;
+
   const [inputState, dispatch] = useReducer(inputReducer, {
-    value: props.initialValue ? props.initialValue : "",
-    isValid: props.initiallyValid,
+    value: initialValue ? initialValue : "",
+    isValid: initiallyValid,
     touched: false,
   });
 
