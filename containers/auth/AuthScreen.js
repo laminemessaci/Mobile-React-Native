@@ -38,7 +38,7 @@ const formReducer = (state, action) => {
   return state;
 };
 
-const AuthScreen = (props) => {
+const AuthScreen = ({ navigation }) => {
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
       email: "",
@@ -52,7 +52,13 @@ const AuthScreen = (props) => {
   });
 
   const onSubmitHandler = () => {
-    console.log(formState.inputValues.email);
+    const email = formState.inputValues.email;
+    if (email.includes("@inextenso.fr")) {
+      console.log("Bienvenues");
+      navigation.navigate("IDElogo");
+    } else {
+      console.log("Vous n'êtes pas client !! ");
+    }
   };
 
   const inputChangeHandler = useCallback(
@@ -74,7 +80,7 @@ const AuthScreen = (props) => {
       keyboardVerticalOffset={20}
       style={styles.screen}
     >
-      <LinearGradient colors={["#ffedff", "#ffd3ee"]} style={styles.gradient}>
+      <LinearGradient colors={["#ffeeff", "#ffd3ee"]} style={styles.gradient}>
         <Card style={styles.authContainer}>
           <ScrollView>
             <View style={styles.buttonContainer}>
@@ -105,7 +111,9 @@ const AuthScreen = (props) => {
                 <IEDFormButton
                   color={Colors.primary}
                   title="login"
-                  onPressHandler={onSubmitHandler}
+                  onPressHandler={() => {
+                    onSubmitHandler();
+                  }}
                 />
               </View>
             </View>
