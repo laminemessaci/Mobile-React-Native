@@ -4,6 +4,12 @@ import IEDFormButton from "../components/IEDFormButton";
 import Colors from "../constants/Colors";
 import { IED_LOGO } from "../images";
 
+
+/**
+ * IED_logo screen
+ * @param {*} param0 
+ * @returns 
+ */
 const IDElogotype = ({ navigation: { goBack } }) => {
   return (
     <View style={styles.container}>
