@@ -5,7 +5,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer, ThemeProvider } from "@react-navigation/native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import MainStackNavigator from "./navigation/MainStackNavigator";
+import MainStackNavigator from "./src/navigation/MainStackNavigator";
 import { colors } from "react-native-elements";
 
 export default function App() {

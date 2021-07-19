@@ -9,10 +9,10 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
-import Colors from "../../constants/Colors";
-import Card from "../../components/Card";
-import IEDFormButton from "../../components/IEDFormButton";
-import IDEFormInput from "../../components/IEDFormInput";
+import Colors from "../../src/constants/Colors";
+import Card from "../../src/components/Card";
+import IEDFormButton from "../../src/components/IEDFormButton";
+import IDEFormInput from "../../src/components/IEDFormInput";
 
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
 
@@ -90,9 +90,8 @@ const AuthScreen = ({ navigation }) => {
     [dispatchFormState]
   );
 
-  //const [isDisable, setIsDisable] = useState(true);
   const isDisable = formState.formIsValid;
-  console.log("hrrrrrrrrrrrrr" + formState.formIsValid);
+
   useEffect(() => {}, [isDisable]);
   return (
     <KeyboardAvoidingView

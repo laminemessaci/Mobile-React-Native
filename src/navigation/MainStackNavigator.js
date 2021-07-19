@@ -2,8 +2,8 @@ import React from "react";
 
 import { createStackNavigator } from "@react-navigation/stack";
 import Colors from "../constants/Colors";
-import AuthScreen from "../containers/auth/AuthScreen";
-import IDElogotype from "../containers/IDElogotype";
+import AuthScreen from "../../src/containers/AuthScreen";
+import IDElogotype from "../../src/containers/IDElogotype";
 
 const defaultNavOptions = {
   headerStyle: {
