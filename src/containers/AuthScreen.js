@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useCallback, useReducer } from "react";
+import React, { useCallback, useReducer } from "react";
 import {
   ScrollView,
   View,
   KeyboardAvoidingView,
   StyleSheet,
-  ActivityIndicator,
   Alert,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
@@ -17,10 +16,10 @@ import IDEFormInput from "../../src/components/IEDFormInput";
 const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
 
 /**
- * function validations
+ * Custom hook Reducer to manage our general state input
  * @param {*} state
  * @param {*} action
- * @returns
+ * @returns new state
  */
 const formReducer = (state, action) => {
   if (action.type === FORM_INPUT_UPDATE) {
@@ -47,7 +46,8 @@ const formReducer = (state, action) => {
 
 const AuthScreen = ({ navigation }) => {
   /**
-   *Custom hook
+   * use our hook reducer with initial values of input
+   * return an update formState with trigger action function (dispatchFormState)
    */
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
@@ -61,6 +61,9 @@ const AuthScreen = ({ navigation }) => {
     formIsValid: false,
   });
 
+  /**
+   * check values of password and email before navigate to logoScreen
+   */
   const onSubmitHandler = () => {
     const email = formState.inputValues.email;
     const password = formState.inputValues.password;
@@ -78,6 +81,10 @@ const AuthScreen = ({ navigation }) => {
     }
   };
 
+  /**
+   * callback update will be executed for each new input action (onChange)
+   */
+
   const inputChangeHandler = useCallback(
     (inputIdentifier, inputValue, inputValidity) => {
       dispatchFormState({
@@ -92,14 +99,13 @@ const AuthScreen = ({ navigation }) => {
 
   const isDisable = formState.formIsValid;
 
-  useEffect(() => {}, [isDisable]);
   return (
     <KeyboardAvoidingView
       behavior="height"
       keyboardVerticalOffset={20}
       style={styles.screen}
     >
-      <LinearGradient colors={["#ffeeff", "#ffd3ee"]} style={styles.gradient}>
+      <LinearGradient colors={["#fceeff", "#ffd3ee"]} style={styles.gradient}>
         <Card style={styles.authContainer}>
           <ScrollView>
             <View style={styles.buttonContainer}>

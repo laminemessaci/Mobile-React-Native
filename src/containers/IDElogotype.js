@@ -1,34 +1,36 @@
+import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import { View, Text, Image, StyleSheet, Dimensions } from "react-native";
 import IEDFormButton from "../components/IEDFormButton";
 import Colors from "../constants/Colors";
 import { IED_LOGO } from "../images";
 
-
 /**
  * IED_logo screen
- * @param {*} param0 
- * @returns 
+ * @param {*} param0
+ * @returns
  */
 const IDElogotype = ({ navigation: { goBack } }) => {
   return (
-    <View style={styles.container}>
-      <Image style={styles.ied_logo} source={IED_LOGO} />
+    <LinearGradient colors={["#fceeff", "#ffd3ee"]} style={styles.gradient}>
+      <View style={styles.container}>
+        <Image style={styles.ied_logo} source={IED_LOGO} />
 
-      <View style={styles.title_container}>
-        <Text style={styles.title_text}>Hello Dear Collaborator!</Text>
-      </View>
+        <View style={styles.title_container}>
+          <Text style={styles.title_text}>Hello Dear Collaborator!</Text>
+        </View>
 
-      <View style={styles.buttonContainer}>
-        <IEDFormButton
-          color={Colors.primary}
-          title="logout"
-          onPressHandler={() => {
-            goBack();
-          }}
-        />
+        <View style={styles.buttonContainer}>
+          <IEDFormButton
+            color={Colors.primary}
+            title="logout"
+            onPressHandler={() => {
+              goBack();
+            }}
+          />
+        </View>
       </View>
-    </View>
+    </LinearGradient>
   );
 };
 
@@ -36,6 +38,11 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "column",
     justifyContent: "center",
+  },
+  gradient: {
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
   },
   ied_logo: {
     borderWidth: 1,

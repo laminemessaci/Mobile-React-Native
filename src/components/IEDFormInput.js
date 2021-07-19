@@ -1,9 +1,19 @@
 import React, { useEffect, useReducer } from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
+import PropTypes from "prop-types";
 
+/**
+ * actions type
+ */
 const INPUT_CHANGE = "INPUT_CHANGE";
 const INPUT_BLUR = "INPUT_BLUR";
 
+/**
+ * Custom hook Reducer to manage our general state input
+ * @param {*} state
+ * @param {*} action trigger
+ * @returns new state
+ */
 const inputReducer = (state, action) => {
   switch (action.type) {
     case INPUT_CHANGE:
@@ -28,7 +38,7 @@ const inputReducer = (state, action) => {
  * @returns
  */
 const IDEFormInput = (props) => {
-  const { initialValue, initiallyValid } = props;
+  const { initialValue, initiallyValid, onInputChange, id } = props;
 
   const [inputState, dispatch] = useReducer(inputReducer, {
     value: initialValue ? initialValue : "",
@@ -36,14 +46,16 @@ const IDEFormInput = (props) => {
     touched: false,
   });
 
-  const { onInputChange, id } = props;
-
   useEffect(() => {
     if (inputState.touched) {
       onInputChange(id, inputState.value, inputState.isValid);
     }
   }, [inputState, onInputChange, id]);
 
+  /**
+   * Check if user input is Valid (email an password)
+   * @param {*} text user input
+   */
   const textChangeHandler = (text) => {
     const emailRegex =
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -66,6 +78,9 @@ const IDEFormInput = (props) => {
     dispatch({ type: INPUT_CHANGE, value: text, isValid: isValid });
   };
 
+  /**
+   * trigger in case the input is touched (onBlur)
+   */
   const lostFocusHandler = () => {
     dispatch({ type: INPUT_BLUR });
   };
@@ -113,4 +128,14 @@ const styles = StyleSheet.create({
   },
 });
 
+IDEFormInput.propTypes = {
+  id: PropTypes.string,
+  initialValue: PropTypes.string,
+  onInputChange: PropTypes.func,
+};
+IDEFormInput.defaultProps = {
+  id: "",
+  initialValue: "",
+  onInputChange: null,
+};
 export default IDEFormInput;
