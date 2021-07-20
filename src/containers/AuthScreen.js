@@ -18,7 +18,7 @@ const FORM_INPUT_UPDATE = "FORM_INPUT_UPDATE";
 /**
  * Custom hook Reducer to manage our general state input
  * @param {*} state
- * @param {*} action
+ * @param {*} action trigger
  * @returns new state
  */
 const formReducer = (state, action) => {
@@ -71,13 +71,8 @@ const AuthScreen = ({ navigation }) => {
       Alert.alert("Sorry!", "You are not an inextenso customer!", [
         { text: "Okay" },
       ]);
-    } else if (password.length < 6) {
-      Alert.alert("Sorry!", "password must be valid!", [{ text: "Okay" }]);
-    }
-
-    if (email.includes("@inextenso.fr") && password.length >= 6) {
+    } else if (email.includes("@inextenso.fr") && password.length >= 6) {
       navigation.navigate("IDElogo");
-    } else {
     }
   };
 
